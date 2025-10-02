@@ -4,14 +4,14 @@ BASE = os.path.dirname(__file__)
 DB = os.path.join(BASE, 'student.db')
 
 
-def connect():
+def connect_():
     with sqlite3.connect(DB) as conn:
         cur = conn.cursor()
         cur.execute(""" CREATE TABLE IF NOT EXISTS students (id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT,
                     roll TEXT UNIQUE,
                     dob TEXT,
-                    contact TEXT
+                    contact TEXT,
                     email TEXT,
                     gender TEXT,
                     class_ TEXT,
@@ -69,4 +69,4 @@ def delete(id):
         cur.rowcount
 
 
-connect()
+connect_()
