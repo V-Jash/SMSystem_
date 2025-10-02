@@ -19,15 +19,19 @@ def connect_():
 
 
 def insert(name, roll, dob, contact, email, gender, class_, address):
-    with sqlite3.connect(DB) as conn:
-        cur = conn.cursor()
-        try:
-            cur.execute(""" INSERT INTO students (name,roll,dob,contact,email,gender,class_,address)
-                        VALUES(?,?,?,?,?,?,?,?)
-    """, (name, roll, dob, contact, email, gender, class_, address))
-            return cur.lastrowid
-        except sqlite3.IntegrityError:
-            return None
+    conn = sqlite3.connect(DB)
+    cur = conn.cursor()
+    try:
+        cur.execute(""" 
+            INSERT INTO students (name, roll, dob, contact, email, gender, class_, address) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (name, roll, dob, contact, email, gender, class_, address))
+        conn.commit()
+        return True   # success
+    except sqlite3.IntegrityError:
+        return False  # duplicate roll (or other unique constraint)
+    finally:
+        conn.close()
 
 
 def view():
